@@ -1,61 +1,140 @@
 import math 
+import json 
 
-# the format for the data set is:
-# [(x_m, f)]
-#  Where:
-#  x_m - midpoint 
-#  f - frequency 
+midpoint = lambda low, high: (low + high) / 2
 
-data_set = [(15, 4), (22, 9), (29, 7), (36, 6)]
+class Row:
+    def __init__(self, row):
+        self.range = row[0]
+        self.frequency = row[1]
+        self.cf = 0 
 
-def get_mean(data_set):
+def get_mean(data_set, total_freq):
     track = 0 
-    sum_f = 0 
-    for data in data_set:
-        track += data[0] * data[1]
-        sum_f += data[1] 
-    return track / sum_f
 
-def get_median(data_set):
-    pass 
+    for data in data_set:
+        track += midpoint(data.range[0],  data.range[1]) 
+
+    return track / total_freq
+
+def get_median(data_set, total_freq):
+    median_class = None 
+    
+    cf = 0 
+    n_2 = total_freq / 2
+    index = 0 
+    less_cf = 0 
+
+    for data in data_set: 
+        cf += data.frequency 
+        data.cf = cf 
+
+        if index == 0 and float(data.cf) == n_2:
+            median_class = data 
+            break
+
+        if index == len(data_set) and float(data.cf) == n_2:
+            median_class = data 
+            less_cf = data_set[index - 1].cf 
+
+        if float(data_set[index-1].cf) < (n_2) <= float(data.cf) and median_class == None:
+            median_class = data 
+            less_cf = data_set[index - 1].cf 
+
+        index += 1 
+
+    lb_mc = median_class.range[0] - 0.5
+    f_mc = median_class.frequency
+    i = (median_class.range[1] - median_class.range[0]) + 1
+
+    return lb_mc + i * ((n_2 - less_cf) / f_mc)
+    
 
 def get_mode(data_set):
-    mod_freq = max([data[1] for data in data_set]) 
+    modal_freq = max([data.frequency for data in data_set]) 
+    modal_class = None 
+    index = 0
 
-def get_mad(data_set, mean):
-    track = 0 
-    freq = 0 
     for data in data_set:
-        track += (abs(data[0] - mean) * data[1])
-        freq += data[1] 
-    return track / freq 
+        if data.frequency == modal_freq:
+            modal_class = data 
+            break
+        index += 1 
 
-def get_var(data_set, mean, is_samp):
+    lb_mo = modal_class.range[0] - 0.5 
+    d_1 = modal_class.frequency - data_set[index - 1].frequency
+    d_2 = modal_class.frequency - data_set[index + 1].frequency
+    i = (modal_class.range[1] - modal_class.range[0]) + 1
+
+    return lb_mo + i * (d_1 / (d_1 + d_2))
+
+def get_mad(data_set, mean, total_freq):
     track = 0 
-    freq = 0 
+
     for data in data_set:
-        track += data[1] * (abs(data[0] - mean))**2
-        freq += data[1]
+        track += (abs(midpoint(data.range[0], data.range[1]) - mean) * data.frequency)
+
+    return track / total_freq 
+
+def get_var(data_set, mean, is_samp, total_freq):
+    track = 0 
+
+    for data in data_set:
+        track += data.frequency * (abs(midpoint(data.range[0], data.range[1]) - mean))**2
 
     if is_samp:
-        return track / (freq - 1)
+        return track / (total_freq - 1)
     
-    return track / freq
+    return track / total_freq
 
-def get_stdv(data_set, mean, is_samp):
-    return math.sqrt(get_var(data_set, mean, is_samp))
+def get_stdv(data_set, mean, is_samp, total_freq):
+    return math.sqrt(get_var(data_set, mean, is_samp, total_freq))
 
-mean = get_mean(data_set)
+def main():
+    total_freq = 0 
 
-print(f"Mean: {mean:.2f}")
-print(f"MAD: {get_mad(data_set, mean):.2f}")
+    with open("./data.json", "r") as f:
+        json_data = json.load(f)
 
-print()
+    data_set = []
 
-print(f"Population Variance: {get_var(data_set, mean, False):.2f}")
-print(f"Sample Variance: {get_var(data_set, mean, True):.2f}")
+    print("Data Below:")
+    print("Range Frequency")
+    for row in json_data["data"]:
+        data_set.append(Row(row))
+        total_freq += row[1]
 
-print()
+        print(f"{row[0][0]}-{row[0][1]}   {row[1]}")
 
-print(f"Population Standard Deviation: {get_stdv(data_set, mean, False):.2f}")
-print(f"Sample Standard Deviation: {get_stdv(data_set, mean, True):.2f}")
+    print()
+
+    print("Measures of Central Tendency")
+    mean = get_mean(data_set, total_freq)
+    print(f"1. Mean: {mean}")
+
+    median = get_median(data_set, total_freq)
+    print(f"2. Median: {median}")
+
+    mode = get_mode(data_set)
+    print(f"3. Mode: {mode}")
+
+    print()
+
+    print("Variability and Dispersion")
+    mad = get_mad(data_set, mean, total_freq)
+    print(f"1. MAD: {mad}")
+
+    variance = get_var(data_set, mean, False, total_freq)
+    print(f"2. Variance (Population): {variance}")
+
+    variance_sample = get_var(data_set, mean, True, total_freq)
+    print(f"3. Variance (Sample): {variance_sample}")
+
+    stdv = get_stdv(data_set, mean, False, total_freq)
+    print(f"4. Standard Deviation (Population): {stdv}")
+
+    stdv_sample = get_stdv(data_set, mean, True, total_freq)
+    print(f"4. Standard Deviation (Sample): {stdv_sample}")
+
+if __name__ == "__main__":
+    main()
