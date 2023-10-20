@@ -13,7 +13,7 @@ def get_mean(data_set, total_freq):
     track = 0 
 
     for data in data_set:
-        track += midpoint(data.range[0],  data.range[1]) 
+        track += data.frequency * midpoint(data.range[0],  data.range[1]) 
 
     return track / total_freq
 
@@ -98,43 +98,42 @@ def main():
 
     data_set = []
 
-    print("Data Below:")
-    print("Range Frequency")
+    print("Range  Frequency")
     for row in json_data["data"]:
         data_set.append(Row(row))
         total_freq += row[1]
 
-        print(f"{row[0][0]}-{row[0][1]}   {row[1]}")
+        print(f"{row[0][0]}-{row[0][1]}      {row[1]}")
 
     print()
 
-    print("Measures of Central Tendency")
+    print("Measures of Central Tendency:")
     mean = get_mean(data_set, total_freq)
-    print(f"1. Mean: {mean}")
+    print(f"1. Mean = {mean}")
 
     median = get_median(data_set, total_freq)
-    print(f"2. Median: {median}")
+    print(f"2. Median = {median}")
 
     mode = get_mode(data_set)
-    print(f"3. Mode: {mode}")
+    print(f"3. Mode = {mode}")
 
     print()
 
     print("Variability and Dispersion")
     mad = get_mad(data_set, mean, total_freq)
-    print(f"1. MAD: {mad}")
+    print(f"1. MAD = {mad}")
 
     variance = get_var(data_set, mean, False, total_freq)
-    print(f"2. Variance (Population): {variance}")
+    print(f"2. Variance = {variance}")
 
     variance_sample = get_var(data_set, mean, True, total_freq)
-    print(f"3. Variance (Sample): {variance_sample}")
+    print(f"3. Variance = {variance_sample}")
 
     stdv = get_stdv(data_set, mean, False, total_freq)
-    print(f"4. Standard Deviation (Population): {stdv}")
+    print(f"4. Standard Deviation (Population) = {stdv}")
 
     stdv_sample = get_stdv(data_set, mean, True, total_freq)
-    print(f"4. Standard Deviation (Sample): {stdv_sample}")
+    print(f"4. Standard Deviation (Sample) = {stdv_sample}")
 
 if __name__ == "__main__":
     main()
