@@ -119,15 +119,15 @@ def main():
 
     print()
 
-    print("Variability and Dispersion")
+    print("Variability and Dispersion:")
     mad = get_mad(data_set, mean, total_freq)
     print(f"1. MAD = {mad}")
 
     variance = get_var(data_set, mean, False, total_freq)
-    print(f"2. Variance = {variance}")
+    print(f"2. Variance (Population) = {variance}")
 
     variance_sample = get_var(data_set, mean, True, total_freq)
-    print(f"3. Variance = {variance_sample}")
+    print(f"3. Variance (Sample) = {variance_sample}")
 
     stdv = get_stdv(data_set, mean, False, total_freq)
     print(f"4. Standard Deviation (Population) = {stdv}")
