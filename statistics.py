@@ -1,6 +1,8 @@
 import math 
 import json 
 
+import pandas as pd 
+
 midpoint = lambda low, high: (low + high) / 2
 
 class Row:
@@ -55,15 +57,15 @@ def get_mode(data_set):
     modal_class = None 
     index = 0
 
-    for data in data_set:
-        if data.frequency == modal_freq:
-            modal_class = data 
+    for i in range(0, len(data_set)):
+        if data_set[i].frequency == modal_freq:
+            modal_class = data_set[i]
+            index = i
             break
-        index += 1 
 
     lb_mo = modal_class.range[0] - 0.5 
     d_1 = 0 if index == 0 else modal_class.frequency - data_set[index - 1].frequency
-    d_2 = 0 if index == len(data_set) else modal_class.frequency - data_set[index + 1].frequency
+    d_2 = 0 if index == (len(data_set)-1) else modal_class.frequency - data_set[index + 1].frequency
     i = (modal_class.range[1] - modal_class.range[0]) + 1
 
     return lb_mo + i * (d_1 / (d_1 + d_2))
@@ -90,20 +92,32 @@ def get_var(data_set, mean, is_samp, total_freq):
 def get_stdv(data_set, mean, is_samp, total_freq):
     return math.sqrt(get_var(data_set, mean, is_samp, total_freq))
 
+def translate_data(grouped_data, data_set, length):
+    range_list = []
+    frequency_list = []
+
+    for r in grouped_data["Range"]:
+        parsed_range = list(map(int, r.split("-")))
+        range_list.append(parsed_range)
+
+    for f in grouped_data["Frequency"]:
+        frequency_list.append(f)
+
+    for i in range(0, length):
+        data_set.append(Row([range_list[i], frequency_list[i]]))
+
 def main():
     total_freq = 0 
-
-    with open("./data.json", "r") as f:
-        json_data = json.load(f)
-
     data_set = []
 
-    print("Range  Frequency")
-    for row in json_data["data"]:
-        data_set.append(Row(row))
-        total_freq += row[1]
+    grouped_data = pd.read_csv("./data/data.csv")
 
-        print(f"{row[0][0]}-{row[0][1]}      {row[1]}")
+    translate_data(grouped_data, data_set, grouped_data.shape[0])
+
+    print(grouped_data)
+
+    for data in data_set:
+        total_freq += data.frequency
 
     print()
 
@@ -134,6 +148,8 @@ def main():
 
     stdv_sample = get_stdv(data_set, mean, True, total_freq)
     print(f"4. Standard Deviation (Sample) = {stdv_sample:.2f}")
+
+    grouped_data = pd.read_csv("./data/data.csv")
 
 if __name__ == "__main__":
     main()
