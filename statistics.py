@@ -63,7 +63,7 @@ def get_mode(data_set):
 
     lb_mo = modal_class.range[0] - 0.5 
     d_1 = 0 if index == 0 else modal_class.frequency - data_set[index - 1].frequency
-    d_2 = 0 if ndex == len(data_set) else modal_class.frequency - data_set[index + 1].frequency
+    d_2 = 0 if index == len(data_set) else modal_class.frequency - data_set[index + 1].frequency
     i = (modal_class.range[1] - modal_class.range[0]) + 1
 
     return lb_mo + i * (d_1 / (d_1 + d_2))
