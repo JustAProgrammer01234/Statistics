@@ -3,8 +3,8 @@ A program written in Python that computes for the central tendency and variabili
 
 ## Format for the csv file:
 ```
-Range, Frequency
-1-10, 3
+Range,Frequency
+1-10,3
 .
 .
 .
