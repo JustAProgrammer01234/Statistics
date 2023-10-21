@@ -62,8 +62,8 @@ def get_mode(data_set):
         index += 1 
 
     lb_mo = modal_class.range[0] - 0.5 
-    d_1 = modal_class.frequency - data_set[index - 1].frequency
-    d_2 = modal_class.frequency - data_set[index + 1].frequency
+    d_1 = 0 if index == 0 else modal_class.frequency - data_set[index - 1].frequency
+    d_2 = 0 if ndex == len(data_set) else modal_class.frequency - data_set[index + 1].frequency
     i = (modal_class.range[1] - modal_class.range[0]) + 1
 
     return lb_mo + i * (d_1 / (d_1 + d_2))
@@ -109,31 +109,31 @@ def main():
 
     print("Measures of Central Tendency:")
     mean = get_mean(data_set, total_freq)
-    print(f"1. Mean = {mean}")
+    print(f"1. Mean = {mean:.2f}")
 
     median = get_median(data_set, total_freq)
-    print(f"2. Median = {median}")
+    print(f"2. Median = {median:.2f}")
 
     mode = get_mode(data_set)
-    print(f"3. Mode = {mode}")
+    print(f"3. Mode = {mode:.2f}")
 
     print()
 
     print("Variability and Dispersion:")
     mad = get_mad(data_set, mean, total_freq)
-    print(f"1. MAD = {mad}")
+    print(f"1. MAD = {mad:.2f}")
 
     variance = get_var(data_set, mean, False, total_freq)
-    print(f"2. Variance (Population) = {variance}")
+    print(f"2. Variance (Population) = {variance:.2f}")
 
     variance_sample = get_var(data_set, mean, True, total_freq)
-    print(f"3. Variance (Sample) = {variance_sample}")
+    print(f"3. Variance (Sample) = {variance_sample:.2f}")
 
     stdv = get_stdv(data_set, mean, False, total_freq)
-    print(f"4. Standard Deviation (Population) = {stdv}")
+    print(f"4. Standard Deviation (Population) = {stdv:.2f}")
 
     stdv_sample = get_stdv(data_set, mean, True, total_freq)
-    print(f"4. Standard Deviation (Sample) = {stdv_sample}")
+    print(f"4. Standard Deviation (Sample) = {stdv_sample:.2f}")
 
 if __name__ == "__main__":
     main()
