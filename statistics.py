@@ -116,7 +116,6 @@ def main():
     data_set = []
 
     grouped_data = pd.read_csv("./data/data.csv")
-    grouped_data.style.hide(axis = "index")
 
     print("Data from ./data/data.csv:")
     translate_data(grouped_data, data_set, grouped_data.shape[0])
