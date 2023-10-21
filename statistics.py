@@ -147,7 +147,7 @@ def main():
     print(f"4. Standard Deviation (Population) = {stdv:.2f}")
 
     stdv_sample = get_stdv(data_set, mean, True, total_freq)
-    print(f"4. Standard Deviation (Sample) = {stdv_sample:.2f}")
+    print(f"5. Standard Deviation (Sample) = {stdv_sample:.2f}")
 
     grouped_data = pd.read_csv("./data/data.csv")
 
