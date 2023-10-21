@@ -11,11 +11,15 @@ class Row:
         self.frequency = row[1]
         self.cf = 0 
 
+    def midpoint(self):
+        r = self.range
+        return (r[0] + r[1]) / 2
+
 def get_mean(data_set, total_freq):
     track = 0 
 
     for data in data_set:
-        track += data.frequency * midpoint(data.range[0],  data.range[1]) 
+        track += data.frequency * data.midpoint()
 
     return track / total_freq
 
@@ -35,11 +39,12 @@ def get_median(data_set, total_freq):
             median_class = data 
             break
 
-        if index == len(data_set) and float(data.cf) == n_2:
-            median_class = data 
-            less_cf = data_set[index - 1].cf 
+        elif index != 0:
+            if float(data_set[index-1].cf) < (n_2) <= float(data.cf) and median_class == None:
+                median_class = data 
+                less_cf = data_set[index - 1].cf 
 
-        if float(data_set[index-1].cf) < (n_2) <= float(data.cf) and median_class == None:
+        elif index == len(data_set) and float(data.cf) == n_2:
             median_class = data 
             less_cf = data_set[index - 1].cf 
 
@@ -74,7 +79,7 @@ def get_mad(data_set, mean, total_freq):
     track = 0 
 
     for data in data_set:
-        track += (abs(midpoint(data.range[0], data.range[1]) - mean) * data.frequency)
+        track += (abs(data.midpoint() - mean) * data.frequency)
 
     return track / total_freq 
 
@@ -82,7 +87,7 @@ def get_var(data_set, mean, is_samp, total_freq):
     track = 0 
 
     for data in data_set:
-        track += data.frequency * (abs(midpoint(data.range[0], data.range[1]) - mean))**2
+        track += data.frequency * (abs(data.midpoint() - mean))**2
 
     if is_samp:
         return track / (total_freq - 1)
@@ -111,7 +116,9 @@ def main():
     data_set = []
 
     grouped_data = pd.read_csv("./data/data.csv")
+    grouped_data.style.hide(axis = "index")
 
+    print("Data from ./data/data.csv:")
     translate_data(grouped_data, data_set, grouped_data.shape[0])
 
     print(grouped_data)
