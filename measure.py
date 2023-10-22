@@ -26,4 +26,4 @@ def measure(place, data_set, divisor, total_freq):
     f_c = measure_class.frequency 
     i = measure_class.i 
 
-    return lb_c + i * ((n_divisor - less_cf) / measure_class.frequency)
+    return lb_c + i * ((n_divisor - less_cf) / f_c)

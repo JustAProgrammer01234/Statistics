@@ -57,8 +57,8 @@ def get_mode(data_set):
             break
 
     lb_mo = modal_class.range[0] - 0.5 
-    d_1 = 0 if index == 0 else modal_class.frequency - data_set[index - 1].frequency
-    d_2 = 0 if index == (len(data_set)-1) else modal_class.frequency - data_set[index + 1].frequency
+    d_1 = modal_class.frequency if index == 0 else modal_class.frequency - data_set[index - 1].frequency
+    d_2 = modal_class.frequency if index == (len(data_set)-1) else modal_class.frequency - data_set[index + 1].frequency
     i = (modal_class.range[1] - modal_class.range[0]) + 1
 
     return lb_mo + i * (d_1 / (d_1 + d_2))
@@ -75,7 +75,7 @@ def get_var(data_set, mean, is_samp, total_freq):
     track = 0 
 
     for data in data_set:
-        track += data.frequency * (abs(data.midpoint() - mean))**2
+        track += data.frequency * ((abs(data.midpoint() - mean))**2)
 
     if is_samp:
         return track / (total_freq - 1)
