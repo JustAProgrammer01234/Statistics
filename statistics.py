@@ -3,6 +3,8 @@ import json
 
 import pandas as pd 
 
+import measure
+
 class Row:
     def __init__(self, row):
         self.range = row[0]
@@ -24,100 +26,13 @@ class MOP:
         self.total_freq = total_freq
 
     def quartile(self, place):
-        data_set = self.data_set
-
-        n_4 = (place * self.total_freq) / 4
-        index = 0
-        quartile_class = None 
-        less_cf = 0 
-
-        for data in data_set:
-            if index == 0 and float(data.cf) == n_4:
-                quartile_class = data 
-                break 
-
-            elif index != 0 and index < len(data_set) - 1:
-                if float(data_set[index-1].cf) < (n_4) <= float(data.cf) and quartile_class == None:
-                    quartile_class = data 
-                    less_cf = data_set[index - 1].cf 
-                    break
-
-            elif index == len(data_set) and float(data.cf) == n_4:
-                quartile_class = data
-                less_cf = data_set[index - 1].cf 
-                break
-
-            index += 1 
-
-        lb_qc = quartile_class.range[0] - 0.5
-        f_qc = quartile_class.frequency 
-        i = quartile_class.i
-
-        return lb_qc + i * ((n_4 - less_cf) / 2)
+        return measure.measure(place, self.data_set, 4, self.total_freq)
 
     def decile(self, place):
-        data_set = self.data_set
-
-        n_10 = (place * self.total_freq) / 10
-        index = 0
-        decile_class = None 
-        less_cf = 0 
-
-        for data in data_set:
-            if index == 0 and float(data.cf) == n_10:
-                decile_class = data 
-                break 
-
-            elif index != 0 and index < len(data_set) - 1:
-                if float(data_set[index-1].cf) < (n_10) <= float(data.cf) and decile_class == None:
-                    decile_class = data 
-                    less_cf = data_set[index - 1].cf 
-                    break 
-
-            elif index == len(data_set) and float(data.cf) == n_10:
-                decile_class = data
-                less_cf = data_set[index - 1].cf 
-                break 
-
-            index += 1 
-
-        lb_dc = decile_class.range[0] - 0.5
-        f_dc = decile_class.frequency 
-        i = decile_class.i
-
-        return lb_dc + i * ((n_10 - less_cf) / 2)
+        return measure.measure(place, self.data_set, 10, self.total_freq)
 
     def percentile(self, place):
-        data_set = self.data_set
-
-        n_100 = (place * self.total_freq) / 100
-        index = 0
-        percentile_class = None 
-        less_cf = 0 
-
-        for data in data_set:
-            if index == 0 and float(data.cf) == n_100:
-                decile_class = data 
-                break 
-
-            elif index != 0 and index < len(data_set) - 1:
-                if float(data_set[index-1].cf) < (n_100) <= float(data.cf) and percentile_class == None:
-                    percentile_class = data 
-                    less_cf = data_set[index - 1].cf 
-                    break 
-
-            elif index == len(data_set) and float(data.cf) == n_100:
-                percentile_class = data
-                less_cf = data_set[index - 1].cf 
-                break
-
-            index += 1 
-
-        lb_pc = percentile_class.range[0] - 0.5
-        f_pc = percentile_class.frequency 
-        i = percentile_class.i
-
-        return lb_pc + i * ((n_100 - less_cf) / 2)
+        return measure.measure(place, self.data_set, 100, self.total_freq)
 
 def get_mean(data_set, total_freq):
     track = 0 
@@ -129,7 +44,6 @@ def get_mean(data_set, total_freq):
 
 def get_median(mop_instance):
     return mop_instance.quartile(2)
-    
 
 def get_mode(data_set):
     modal_freq = max([data.frequency for data in data_set]) 
@@ -197,7 +111,6 @@ def main():
 
     print("Data from ./data/data.csv:")
     translate_data(grouped_data, data_set, grouped_data.shape[0])
-
     print(grouped_data)
 
     for data in data_set:
@@ -245,19 +158,19 @@ def main():
     print()
     print(" Quartile:")
     for i in range(1, 4):
-        print(f"  {q_i}% of the data: {mop_instance.quartile(i):.2f}")
+        print(f"  {q_i}% of the data = {mop_instance.quartile(i):.2f}")
         q_i += 25
 
     print()
     print(" Decile:")
     for i in range(1, 10):
-        print(f"  {d_i}% of the data: {mop_instance.decile(i):.2f}")
+        print(f"  {d_i}% of the data = {mop_instance.decile(i):.2f}")
         d_i += 10
 
     print()
     print(" Percentile")
     for j in range(1, 100):
-        print(f"  {j}% of the data: {mop_instance.percentile(j):.2f}")
+        print(f"  {j}% of the data = {mop_instance.percentile(j):.2f}")
 
 
 if __name__ == "__main__":
