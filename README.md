@@ -5,7 +5,7 @@ A program written in Python that computes for the central tendency, variability,
 ```
 Range,Frequency
 1-10,3
-.
-.
-.
+...
+...
+...
 ```

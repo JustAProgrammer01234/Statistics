@@ -5,7 +5,7 @@ def measure(place, data_set, divisor, total_freq):
     less_cf = 0 
 
     for data in data_set:
-        if index == 0 and n_divisor < float(data.cf):
+        if index == 0 and n_divisor <= float(data.cf):
             measure_class = data 
             break 
 
