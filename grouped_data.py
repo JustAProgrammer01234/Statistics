@@ -3,7 +3,7 @@ import json
 
 import pandas as pd 
 
-import measure
+from utils import measure
 
 class Row:
     def __init__(self, row):
@@ -107,9 +107,9 @@ def main():
     total_freq = 0 
     data_set = []
 
-    grouped_data = pd.read_csv("./data/data.csv")
+    grouped_data = pd.read_csv("./data/grouped_data.csv")
 
-    print("Data from ./data/data.csv:")
+    print("Data from ./data/grouped_data.csv:")
     translate_data(grouped_data, data_set, grouped_data.shape[0])
     print(grouped_data)
 
