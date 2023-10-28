@@ -9,16 +9,11 @@ def measure(place, data_set, divisor, total_freq):
             measure_class = data 
             break 
 
-        elif index != 0 and index < len(data_set) - 1:
+        elif index != 0:
             if float(data_set[index-1].cf) < n_divisor <= float(data.cf):
                 measure_class = data 
                 less_cf = data_set[index - 1].cf 
-                break 
-
-        elif index == len(data_set) - 1 and n_divisor <= float(data.cf):
-            measure_class = data 
-            less_cf = data_set[index - 1].cf 
-            break 
+                break
 
         index += 1
 

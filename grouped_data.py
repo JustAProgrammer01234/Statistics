@@ -103,7 +103,7 @@ def translate_data(grouped_data, data_set, length):
         cf += data_set[i].frequency
         data_set[i].cf = cf 
 
-def main():
+def main_grouped_data():
     total_freq = 0 
     data_set = []
 
@@ -132,7 +132,7 @@ def main():
 
     print()
 
-    print("Variability and Dispersion:")
+    print("Measures of Variability and Dispersion:")
     mad = get_mad(data_set, mean, total_freq)
     print(f"1. MAD = {mad:.2f}")
 
@@ -164,8 +164,7 @@ def main():
     print()
     print(" Decile:")
     for i in range(1, 10):
-        print(f"  {d_i}% of the data = {mop_instance.decile(i):.2f}")
-        d_i += 10
+        print(f"  {i * 10}% of the data = {mop_instance.decile(i):.2f}")
 
     print()
     print(" Percentile")
