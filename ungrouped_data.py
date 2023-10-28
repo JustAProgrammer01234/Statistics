@@ -40,7 +40,8 @@ def mop(k, n, divisor, sorted_data):
         i = int(i)
         data = (sorted_data[i] + sorted_data[i + 1]) / 2
     else:
-        data = sorted_data[int(i)]
+        index = int(i) + 1
+        data = sorted_data[index]
 
     return data
 
@@ -51,13 +52,13 @@ def main_ungrouped_data():
     mean = sum(ungrouped_data) / len(ungrouped_data)
 
     print("Data:")
-    print(ungrouped_data)
+    for data in ungrouped_data:
+        print(data)
     print()
 
     print("Measures of Central Tendency:")
-
     print(f"Mean = {mean:.2f}")
-    print(f"Median = {mop(5, len(ungrouped_data), 10, sorted_data):.2f}")
+    print(f"Median = {mop(2, len(ungrouped_data), 4, sorted_data):.2f}")
     print("Mode = no mode yet :clown:")
     print() 
 
