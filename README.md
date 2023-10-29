@@ -10,7 +10,7 @@ Range,Frequency
 ...
 ```
 
-## Format for the ungrouped_datacsv file:
+## Format for the ungrouped_data.csv file:
 ```
 Data
 74

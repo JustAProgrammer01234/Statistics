@@ -126,7 +126,8 @@ if __name__ == "__main__":
     letter = None 
 
     clear_terminal()
-    print("Welcome to Statistics! A program that makes use of various methods in statistics to calculate and visualize data!")
+    print("Welcome to Statistics!")
+    print("A program written in Python that visualizes and computes for the central tendency, variability and dispersion, and measures of position of grouped and ungrouped data!")
     print("Note that the data are located in the data folder in the directory this python file is in.\n")
     print("Would you like to visualize or calculate data? (Use the letter behind ']')")
     input_options("mm")
