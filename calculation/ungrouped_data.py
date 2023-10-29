@@ -46,14 +46,16 @@ def mop(k, n, divisor, sorted_data):
     return data
 
 def main_ungrouped_data():
+    ungrouped_data_df = pd.read_csv("./data/ungrouped_data.csv")
+    ungrouped_data_df.index += 1
+
     ungrouped_data = pd.read_csv("./data/ungrouped_data.csv")["Data"]
     sorted_data = ungrouped_data.sort_values(ascending = True).to_numpy()
 
     mean = sum(ungrouped_data) / len(ungrouped_data)
 
     print("Data:")
-    for data in ungrouped_data:
-        print(data)
+    print(ungrouped_data_df)
     print()
 
     print("Measures of Central Tendency:")
