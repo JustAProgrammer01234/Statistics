@@ -28,6 +28,17 @@ def clear_terminal():
     else:
         os.system("clear")
 
+def clear_the_screen():
+    while True:
+        letter = input("Would you like to go back? (Enter Y if you want.): ").strip()
+
+        if letter == "Y":
+            clear_terminal()
+            break 
+
+    print("Would you like to calculate grouped or ungrouped data? (Use the letter behind ']')")
+    input_options()
+
 def choose_calculation():
     print("Would you like to calculate grouped or ungrouped data? (Use the letter behind ']')")
     input_options()
@@ -35,7 +46,7 @@ def choose_calculation():
     letter = None 
     
     while True:
-        letter = input("[Calculate Section] Choose your letter (press q to exit to main menu): ").strip()
+        letter = input("[Calculate Section] Choose your letter (press q to exit to the main menu): ").strip()
 
         match letter:
             case 'q':
@@ -46,18 +57,20 @@ def choose_calculation():
                 input_options(section = "mm")
                 break 
             case 'A':
-                print()
+                clear_terminal()
                 main_ungrouped_data()
                 print()
+                clear_the_screen()
             case 'B':
-                print()
+                clear_terminal()
                 main_grouped_data()
                 print()
+                clear_the_screen()
             case 'C':
                 input_options()
 
 def choose_visualization(is_grouped):
-    print("Would you like to choose Line or Bar graph? (Use the letter behind ])")
+    print("Would you like to choose Line or Bar graph? (Use the letter behind ']')")
     input_options(section = "v")
 
     indicator = "Grouped Data" if is_grouped else "Ungrouped Data"
@@ -75,7 +88,7 @@ def choose_visualization(is_grouped):
         match letter:
             case 'q':
                 clear_terminal()
-                print("Would you like to visualize grouped or ungrouped data? (Use the letter behind ])")
+                print("Would you like to visualize grouped or ungrouped data? (Use the letter behind ']')")
                 input_options(section = "v")
                 break 
             case 'A':
@@ -84,7 +97,7 @@ def choose_visualization(is_grouped):
                 bar_graph() 
             case 'C':
                 input_options()
-                
+
 def choose_data_visualization():
     print("Would you like to visualize grouped or ungrouped data? (Use the letter behind ])")
     input_options()
@@ -112,6 +125,7 @@ def choose_data_visualization():
 if __name__ == "__main__":
     letter = None 
 
+    clear_terminal()
     print("Welcome to Statistics! A program that makes use of various methods in statistics to calculate and visualize data!")
     print("Note that the data are located in the data folder in the directory this python file is in.\n")
     print("Would you like to visualize or calculate data? (Use the letter behind ']')")
