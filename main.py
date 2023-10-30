@@ -83,13 +83,13 @@ def choose_visualization(is_grouped):
         bar_graph = bar_graph_ungrouped
 
     while True:
-        letter = input(f"[Visualize {indicator} Section] Choose your letter (press q to exit to main menu): ")
+        letter = input(f"[Visualize {indicator} Section] Choose your letter (press q to go back): ")
 
         match letter:
             case 'q':
                 clear_terminal()
                 print("Would you like to visualize grouped or ungrouped data? (Use the letter behind ']')")
-                input_options(section = "v")
+                input_options()
                 break 
             case 'A':
                 line_graph() 
