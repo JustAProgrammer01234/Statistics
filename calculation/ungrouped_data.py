@@ -1,6 +1,51 @@
 import math
 import pandas as pd
-import numpy as np  
+import numpy as np 
+
+def return_index(array, elem):
+    for i in range(len(array)):
+        if array[i] == elem:
+            return i 
+
+def count_data(array, elem):
+    count = 0 
+    for e in array:
+        if e == elem:
+            count += 1 
+    return count 
+
+def mode(ungrouped_data):
+    data = np.empty(len(ungrouped_data.unique()))
+    data[:] = np.nan
+
+    occurence = np.zeros(len(ungrouped_data.unique()))
+
+    working_index = 0 
+
+    for i in range(len(ungrouped_data)):
+        if ungrouped_data[i] not in data:
+            data[working_index] = ungrouped_data[i]
+            occurence[working_index] += 1
+            working_index += 1  
+        else:
+            index = return_index(data, ungrouped_data[i])
+            occurence[index] += 1 
+
+    unique_mode = np.unique(occurence)
+
+    if len(unique_mode) == 1:
+        return "No mode"
+
+    modes = np.empty(count_data(occurence, max(unique_mode)))
+    modes[:] = np.nan
+
+    working_index = 0 
+    for i in range(len(occurence)):
+        if occurence[i] == max(unique_mode):
+            modes[working_index] = data[i]
+            working_index += 1
+
+    return modes.astype("int32")
 
 def mad(ungrouped_data, mean):
     track = 0 
@@ -45,23 +90,29 @@ def mop(k, n, divisor, sorted_data):
 
     return data
 
-def main_ungrouped_data():
-    ungrouped_data_df = pd.read_csv("./data/ungrouped_data.csv")
-    ungrouped_data_df.index += 1
+def display_data(ungrouped_data):
+    if len(ungrouped_data) <= 15:
+        text = f"{ungrouped_data}" 
+    else:
+        text = f"{ungrouped_data[:3]}...{ungrouped_data[-3:]}"
 
+    print(text.replace("[", "").replace("]", ""))
+    print(f"Length of data set = {len(ungrouped_data)}")
+
+def main_ungrouped_data():
     ungrouped_data = pd.read_csv("./data/ungrouped_data.csv")["Data"]
     sorted_data = ungrouped_data.sort_values(ascending = True).to_numpy()
 
     mean = sum(ungrouped_data) / len(ungrouped_data)
 
     print("Data:")
-    print(ungrouped_data_df)
+    display_data(ungrouped_data.to_numpy())
     print()
 
     print("Measures of Central Tendency:")
     print(f"Mean = {mean:.2f}")
     print(f"Median = {mop(2, len(ungrouped_data), 4, sorted_data):.2f}")
-    print("Mode = no mode yet :clown:")
+    print(f"Mode = {mode(ungrouped_data)}")
     print() 
 
     print("Measures of Variability and Dispersion:")
