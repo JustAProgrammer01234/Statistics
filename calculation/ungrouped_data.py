@@ -116,7 +116,7 @@ def main_ungrouped_data():
 
     mean = sum(ungrouped_data) / len(ungrouped_data)
 
-    print("Data:")
+    print("Data from ./data/ungrouped_data.csv:")
     display_data(ungrouped_data.to_numpy())
     print()
 
