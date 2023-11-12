@@ -45,7 +45,18 @@ def mode(ungrouped_data):
             modes[working_index] = data[i]
             working_index += 1
 
-    return modes.astype("int32")
+    if len(modes) == 1:
+        mode_type = "Unimodal"
+    elif len(modes) == 2:
+        mode_type = "Bimodal"
+    elif len(modes) == 3:
+        mode_type = "Trimodal"
+    else:
+        mode_type = "Multimodal"
+
+    modes = modes.astype("int32")
+
+    return f"{modes} ({mode_type})"
 
 def mad(ungrouped_data, mean):
     track = 0 
