@@ -110,8 +110,10 @@ def main_grouped_data():
     grouped_data = pd.read_csv("./data/grouped_data.csv")
 
     print("Data from ./data/grouped_data.csv:")
-    translate_data(grouped_data, data_set, grouped_data.shape[0])
+    grouped_data.index += 1
     print(grouped_data)
+
+    translate_data(grouped_data, data_set, grouped_data.shape[0])
 
     for data in data_set:
         total_freq += data.frequency
